@@ -16,7 +16,7 @@ import IntentInput from "@/components/ui/IntentInput";
 import TranscriptionPanel from "@/components/ui/TranscriptionPanel";
 import { GroundingFile, ToolResult } from "./types";
 
-import logo from "./assets/MetLife.png";
+import logo from "./assets/logo.svg";
 
 function App() {
     const [isRecording, setIsRecording] = useState(false);
