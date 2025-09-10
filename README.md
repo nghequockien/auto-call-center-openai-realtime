@@ -233,6 +233,10 @@ sequenceDiagram
 	participant Backend
 
 	User->>Frontend: Speak (record audio)
+   Frontend->>Backend: handshake (token request)
+   Backend-->>Frontend: session.created
+   Frontend->>Backend: session.getting (intent/customer info like name/policy)
+   Backend-->>Frontend: session.update (session config)
 	Frontend->>Backend: input_audio_buffer.append (audio chunk)
 	Frontend->>Backend: input_audio_buffer.clear (optional)
 	Backend-->>Frontend: response.audio_transcript.delta (partial transcript)
@@ -241,8 +245,8 @@ sequenceDiagram
 	Backend-->>Frontend: response.audio.delta (AI audio response)
 	Backend-->>Frontend: response.done (AI response complete)
 	Backend-->>Frontend: extension.middle_tier_tool.response (tool/RAG info)
-	Frontend->>Backend: session.getting (intent/info)
-	Backend-->>Frontend: session.update (session config)
+
+
 ```
 
 > You can view this diagram rendered in supported Markdown viewers or with Mermaid Live Editor.

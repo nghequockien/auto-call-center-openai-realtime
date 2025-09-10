@@ -27,7 +27,9 @@ function App() {
     const [transcription, setTranscription] = useState("");
 
     const { startSession, addUserAudio, inputAudioBufferClear, sendGettingMessage } = useRealTime({
-        onWebSocketOpen: () => console.log("WebSocket connection opened"),
+        onWebSocketOpen: () => {
+            console.log("WebSocket connection opened");
+        },
         onWebSocketClose: () => console.log("WebSocket connection closed"),
         onWebSocketError: event => console.error("WebSocket error:", event),
         onReceivedError: message => console.error("error", message),

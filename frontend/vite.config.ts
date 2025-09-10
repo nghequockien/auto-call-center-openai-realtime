@@ -24,6 +24,12 @@ export default defineConfig({
                 target: "ws://localhost:8765",
                 ws: true,
                 rewriteWsOrigin: true
+                // configure: (proxy, options) => {
+                //     proxy.on("proxyReqWs", (proxyReq, req, socket, options, head) => {
+                //         const token = "your_token_here";
+                //         proxyReq.setHeader("Authorization", `Bearer ${token}`);
+                //     });
+                // }
             }
         }
     }
