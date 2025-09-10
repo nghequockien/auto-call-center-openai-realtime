@@ -23,13 +23,13 @@ export default defineConfig({
                 //target: "ws://f9b322a8d01c.mylabserver.com:8080",
                 target: "ws://localhost:8765",
                 ws: true,
-                rewriteWsOrigin: true
-                // configure: (proxy, options) => {
-                //     proxy.on("proxyReqWs", (proxyReq, req, socket, options, head) => {
-                //         const token = "your_token_here";
-                //         proxyReq.setHeader("Authorization", `Bearer ${token}`);
-                //     });
-                // }
+                rewriteWsOrigin: true,
+                configure: (proxy, options) => {
+                    proxy.on("proxyReqWs", (proxyReq, req, socket, options, head) => {
+                        const token = "your_token_here";
+                        proxyReq.setHeader("Authorization", `Bearer ${token}`); // Example of adding a custom header
+                    });
+                }
             }
         }
     }

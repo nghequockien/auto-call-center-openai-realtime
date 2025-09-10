@@ -5,6 +5,8 @@ import fastifyWebsocket from "@fastify/websocket";
 import fastifyFormBody from "@fastify/formbody";
 import { RTMiddleTier } from "./rtmt.js";
 import { attachRagTools } from "./ragtools.js";
+import { request } from "http";
+import { parse } from "url";
 
 const app = Fastify({ logger: true });
 await app.register(fastifyWebsocket);
@@ -53,6 +55,16 @@ const rtmt = new RTMiddleTier({
   systemMessage: cfg.systemMessage,
 });
 
+const authenticate = (request) => {
+  const { token, id } = parse(request.url, true).query;
+  console.log("Authenticating request with token:", token, "id:", id);
+  // In a production app, validate the token here (e.g., check signature, expiry, etc.)
+  if (!token || !id) {
+    return false;
+  }
+  return true;
+};
+
 // Attach the RAG tools to the middle tier
 attachRagTools(rtmt, cfg);
 
@@ -64,10 +76,18 @@ app.get("/realtime", { websocket: true }, (connection, req) => {
   app.log.info("Client connected for realtime");
   // Note: in a production app, you should authenticate/authorize the user here
   // and pass an identity
+  if (!authenticate(req)) {
+    socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
+    socket.destroy();
+    return;
+  }
+
   const clientSocket = connection;
   const headers = Object.fromEntries(
     Object.entries(req.headers).map(([k, v]) => [k.toLowerCase(), v])
   );
+  console.log("Request headers:", headers);
+
   rtmt.connect(clientSocket, headers);
 });
 

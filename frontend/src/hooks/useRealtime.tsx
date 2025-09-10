@@ -64,7 +64,21 @@ export default function useRealTime({
         onClose: () => onWebSocketClose?.(),
         onError: event => onWebSocketError?.(event),
         onMessage: event => onMessageReceived(event),
-        shouldReconnect: () => true
+        shouldReconnect: () => true,
+        // Add custom authentication headers here
+        // Example: pass an Authorization header or custom token
+        // Note: headers option is only supported in browser if server allows it (CORS)
+        // and only for protocols like wss://, not ws:// in some browsers
+        // See: https://github.com/robtaussig/react-use-websocket#passing-additional-options
+        // If not supported, use query params as fallback
+        // headers: { Authorization: `Bearer ${yourToken}` }
+        // For example:
+        // headers: { 'x-custom-auth': 'your-auth-token' }
+        // If you want to use aoaiApiKeyOverride as a header:
+        queryParams: {
+            token: "your-token-here",
+            id: "your-user-id"
+        }
     });
 
     const startSession = () => {
